@@ -155,7 +155,7 @@ def train(epoch):
     if opt.model == 'gated': 
         model.current_epoch = epoch
 
-    global e, updates, total_loss, start_time, report_total
+    global updates, total_loss, start_time, report_total
 
     for raw_src, src, src_len, raw_tgt, tgt, tgt_len in trainloader:
 
@@ -192,7 +192,7 @@ def train(epoch):
 
             model.train()
             total_loss = 0
-            start_time = 0
+            start_time = time.time()
             report_total = 0
 
         if updates % config.save_interval == 0:  
@@ -231,7 +231,7 @@ def eval(epoch):
 
     score = {}
     result = utils.eval_metrics(reference, candidate, label_dict, log_path)
-    logging_csv([e, updates, result['hamming_loss'], \
+    logging_csv([epoch, updates, result['hamming_loss'], \
                 result['micro_f1'], result['micro_precision'], result['micro_recall']])
     print('hamming_loss: %.8f | micro_f1: %.4f'
           % (result['hamming_loss'], result['micro_f1']))
